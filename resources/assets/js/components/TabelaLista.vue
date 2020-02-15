@@ -19,8 +19,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in lista" v-bind:key="item">
-                        <td v-for=" i in item" v-bind:key="i">{{i}}</td>
+                    <tr v-for="(item, index) in lista">
+                        <td v-for=" subitem in item">{{subitem}}</td>
                         <td v-if="detalhe || editar || deletar">
                             <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar" method="post">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -54,6 +54,8 @@
         data: function(){
           return {
               buscar:'',
+              ordemAux:this.ordem ||"asc",
+              ordemAuxCol: this.ordemcol || 0
           }
         },
         methods:{
@@ -61,11 +63,11 @@
                 document.getElementById('index').submit();
             },
             ordenaColuna: function (coluna) {
-                this.ordemcol = coluna;
-                if(this.ordem.toLowerCase() == "asc"){
-                    this.ordem = 'desc';
+                this.ordemAuxCol = coluna;
+                if(this.ordemAux.toLowerCase() == "asc"){
+                    this.ordemAux = 'desc';
                 }else {
-                    this.ordem = 'asc';
+                    this.ordemAux = 'asc';
                 }
             }
 
@@ -74,8 +76,8 @@
         computed:{
             lista:function () {
 
-                let ordem = this.ordem ||"asc";
-                let ordemCol = this.ordemcol || 0;
+                let ordem = this.ordemAux;
+                let ordemCol = this.ordemAuxCol;
 
                 ordem = ordem.toLowerCase();
                 ordemCol = parseInt(ordemCol);
